@@ -1,4 +1,7 @@
-"""web_words.py - Project script (example).
+"""web_words.py - Project script (custom).
+
+Author: Josiah Davis
+Date: 2026-10
 
 Purpose
 
