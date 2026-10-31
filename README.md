@@ -141,6 +141,22 @@ GitHub Actions include:
 - [CI: Python and Documentation Checks](https://github.com/jgdavis24/nlp-01-getting-started/actions/workflows/ci-python-zensical.yml)
 - [CD: Documentation Deployment](https://github.com/jgdavis24/nlp-01-getting-started/actions/workflows/deploy-zensical.yml)
 
+## My Custom Work
+
+### D1. Baseline
+
+Ran the example as-is with `uv run python -m nlp.web_words` on 2026-10-30.
+
+- Total raw words: 8,331
+- Total cleaned words: 5,520
+- Top words: language (111), natural (69), processing (54), text (52)
+- Filler words still in the top 10: that (39), from (39), with (38), this (37), e.g (35)
+
+The term "nlp" only shows up when punctuation is attached (like "nlp,").
+The length check runs before punctuation is stripped,
+so "nlp," passes as 4 characters and then gets counted as "nlp".
+A plain "nlp" is only 3 characters and gets filtered out by `len(word) > 3`.
+
 ## Developer Reference
 
 Follow the
