@@ -144,10 +144,11 @@ print(f"Total raw words: {count_of_words:,}")
 words = [word.lower() for word in words]
 
 # Strip out (remove) common punctuation from the beginning and end of words.
-# Keep only tokens longer than 3 characters to reduce noise.
+# D2 experiment (J. Davis): lowered the minimum from > 3 to > 2
+# so 3-letter terms like "nlp" are kept.
 # Again, a list comprehension is great for simple list-to-list transformations.
 clean_words: list[str] = [
-    word.strip(".,:;!?()[]\"'") for word in words if len(word) > 3
+    word.strip(".,:;!?()[]\"'") for word in words if len(word) > 2
 ]
 count_of_clean_words: int = len(clean_words)
 

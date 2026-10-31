@@ -157,6 +157,27 @@ The length check runs before punctuation is stripped,
 so "nlp," passes as 4 characters and then gets counted as "nlp".
 A plain "nlp" is only 3 characters and gets filtered out by `len(word) > 3`.
 
+### D2. Technical Modification
+
+**Change:** In `src/nlp/web_words.py`, lowered the minimum word length
+from `len(word) > 3` to `len(word) > 2`.
+
+**Why:** The baseline was dropping "nlp", the main acronym for the topic of the page.
+
+**Prediction:** [write what you expected before running it]
+
+**Result:**
+
+- Total cleaned words went from 5,520 to 6,415 (+895)
+- "nlp" now counts 43 and is 8th in the top 10
+- "the" (299) and "and" (156) took over the top two spots, and "for" (50) entered the top 10
+- Topic words did not change: language (111), natural (69), processing (54), text (52)
+
+**What I learned:** A length cutoff is a tradeoff.
+Lowering it kept a short term that matters but also let in short filler words.
+Length alone cannot tell the difference, so a stop word list is needed to remove filler
+while keeping meaningful short terms.
+
 ## Developer Reference
 
 Follow the
