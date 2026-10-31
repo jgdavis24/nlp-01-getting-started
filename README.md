@@ -9,7 +9,7 @@
 [![Zensical docs](https://img.shields.io/badge/Zensical-docs-purple)](https://zensical.org/)
 [![MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
 
-> Retrieve, process, and visualize text from the web using Python.
+> Retrieve, clean, and visualize the most frequent terms in the Wikipedia article on sports betting.
 
 ## Project Overview
 
@@ -22,21 +22,22 @@ First project in the Web Mining and Applied NLP course.
 Based on the example project
 [denisecase/nlp-01-getting-started](https://github.com/denisecase/nlp-01-getting-started).
 
-Web Mining and Applied Natural Language Processing (NLP)
-focus on retrieving, processing, and analyzing text
-from the web and other digital sources.
+**My question:** What terms dominate a general article about sports betting,
+and do league acronyms like NFL, NBA, and MLB show up
+once short words are kept and filler words are removed?
 
-The goal is to establish a working Python environment,
-explore a professional project structure,
-run a Python text analysis script,
-and verify that the project works.
+I work in marketing acquisition in the online sportsbook and casino industry,
+so I picked a topic where I know what the important terms should be.
+
+The full data story is on the
+[hosted documentation site](https://jgdavis24.github.io/nlp-01-getting-started/).
 
 The project is configured in
 [pyproject.toml](pyproject.toml).
 
 ## Data
 
-The example retrieves HTML from a public web page
+The project retrieves HTML from a public web page
 using the Requests library.
 
 BeautifulSoup parses the HTML and extracts text
@@ -44,42 +45,43 @@ for analysis.
 
 No local input dataset is required.
 
-The example uses the Wikipedia article on
-[Natural Language Processing](https://en.wikipedia.org/wiki/Natural_language_processing).
+- Custom analysis: [Sports betting - Wikipedia](https://en.wikipedia.org/wiki/Sports_betting)
+- Original example: [Natural Language Processing - Wikipedia](https://en.wikipedia.org/wiki/Natural_language_processing)
 
 ## Approach
 
-The project uses Python to retrieve and analyze web text.
-
-The example demonstrates:
+The project uses Python to retrieve and analyze web text:
 
 - Retrieving HTML using HTTP requests.
 - Parsing HTML and extracting text with BeautifulSoup.
-- Cleaning and normalizing text.
+- Cleaning text, including a custom stop word list.
 - Counting word frequencies using Polars.
 - Visualizing frequent words using Matplotlib.
 - Creating word clouds to explore vocabulary patterns.
 
-Explore these important project components:
+Important project components:
 
-- [pyproject.toml](pyproject.toml) - project identity, dependencies, and tool configuration.
-- [src/nlp/web_words.py](src/nlp/web_words.py) - executable Python analysis.
+- [src/nlp/sports_words.py](src/nlp/sports_words.py) - my custom sports betting analysis.
+- [src/nlp/web_words.py](src/nlp/web_words.py) - the example analysis (with my D2 change).
 - [notebooks/web_words.ipynb](notebooks/web_words.ipynb) - interactive Jupyter notebook example.
+- [pyproject.toml](pyproject.toml) - project identity, dependencies, and tool configuration.
 - [tests/](tests/) - automated tests.
 - [.github/workflows/](.github/workflows/) - automated testing and documentation deployment.
-- [docs/](docs/) - project documentation.
+- [docs/](docs/) - project documentation and saved charts.
 - [zensical.toml](zensical.toml) - documentation configuration.
-
-The goal is to get the project running,
-inspect the results, and understand the basic workflow
-for acquiring and analyzing text.
 
 ## Run the Project
 
 Follow the [Professional Python Workflow Guide](https://denisecase.github.io/pro-analytics-02/)
 to set up your machine and project environment.
 
-From a VS Code terminal in the project root:
+From a VS Code terminal in the project root, run my custom analysis:
+
+```shell
+uv run python -m nlp.sports_words
+```
+
+Or run the original example:
 
 ```shell
 uv run python -m nlp.web_words
@@ -88,14 +90,9 @@ uv run python -m nlp.web_words
 Close each visualization window after viewing
 so the script can continue executing.
 
-The Jupyter notebook provides an additional
-interactive version of the analysis.
+The custom script also saves both charts to `docs/images`.
 
 ## Results
-
-The example retrieves web text,
-computes word frequencies,
-and displays a frequency bar chart and word cloud.
 
 Successful execution produces:
 
@@ -107,12 +104,11 @@ Pipeline executed successfully!
 
 A `project.log` file is created in the project root.
 
-This confirms that the Python analysis executes
-and the logging system works.
+Top terms in the sports betting article:
+sports (188), betting (164), bet (54), gambling (45), bets (41),
+ncaa (33), league (33), odds (32), states (32), football (30).
 
-### Example Visualization
-
-![Word Cloud Example](docs/images/word_cloud_example.png)
+![Sports Betting Top 15 Words](docs/images/sports_top_words.png)
 
 ## Verification
 
@@ -127,9 +123,8 @@ uv run python -m pytest
 The [hosted documentation site](https://jgdavis24.github.io/nlp-01-getting-started/)
 is published using Zensical and GitHub Pages.
 
-The documentation site is used to present the project report,
-covering such sections as data, methods, results, visualizations,
-interpretation, and conclusions.
+It covers the data, methods, custom modifications, results,
+interpretation, limitations, and next steps.
 
 ## CI/CD and GitHub Actions
 
@@ -164,7 +159,7 @@ from `len(word) > 3` to `len(word) > 2`.
 
 **Why:** The baseline was dropping "nlp", the main acronym for the topic of the page.
 
-**Prediction:** [write what you expected before running it]
+**Prediction:** [PASTE YOUR PREDICTION LINE BACK HERE]
 
 **Result:**
 
@@ -177,6 +172,23 @@ from `len(word) > 3` to `len(word) > 2`.
 Lowering it kept a short term that matters but also let in short filler words.
 Length alone cannot tell the difference, so a stop word list is needed to remove filler
 while keeping meaningful short terms.
+
+### D3. Custom Application
+
+Applied the same techniques to the
+[Sports betting](https://en.wikipedia.org/wiki/Sports_betting) article
+in [src/nlp/sports_words.py](src/nlp/sports_words.py):
+
+- Strips punctuation before the length check (fixes the D1 issue).
+- Keeps words longer than 2 characters so league acronyms survive (from D2).
+- Removes a stop word list of filler words and Wikipedia page text.
+- Drops digit-only tokens like years.
+- Saves the charts to `docs/images` for the documentation site.
+
+Result: 10,724 raw words, 6,115 cleaned words.
+The article leans legal and regulatory ("states", "online", "legal", "PASPA"),
+and NCAA (33) ranks above every pro league.
+Full write-up on the [documentation site](https://jgdavis24.github.io/nlp-01-getting-started/).
 
 ## Developer Reference
 
@@ -262,7 +274,9 @@ testing, documentation, and code quality.
 ## Links
 
 - [Hosted Documentation](https://jgdavis24.github.io/nlp-01-getting-started/)
-- [Professional Python Workflow Guide](https://denisecase.github.io/pro-analytics-02/)
+- [Data Source: Sports betting - Wikipedia](https://en.wikipedia.org/wiki/Sports_betting)
 - [Original Example Project](https://github.com/denisecase/nlp-01-getting-started)
+- [Professional Python Workflow Guide](https://denisecase.github.io/pro-analytics-02/)
+- [AI Use Statement](AI_USE.md)
 - [Citation](CITATION.cff)
 - [License](LICENSE)
