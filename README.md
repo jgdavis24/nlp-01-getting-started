@@ -159,7 +159,7 @@ from `len(word) > 3` to `len(word) > 2`.
 
 **Why:** The baseline was dropping "nlp", the main acronym for the topic of the page.
 
-**Prediction:** [PASTE YOUR PREDICTION LINE BACK HERE]
+**Prediction:** I thought "nlp" would show up but didn't think about "the" and "and" taking over the top spots.
 
 **Result:**
 
